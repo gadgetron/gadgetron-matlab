@@ -1,0 +1,79 @@
+classdef Connection < handle
+    
+    properties (GetAccess = public, SetAccess = private)
+        config 
+        header
+    end
+   
+    properties (Access = private)
+        socket
+
+        readers 
+        writers
+        
+        next_mid
+    end
+    
+    methods (Access = public)
+        function self = Connection(socket)
+            self.socket = socket;
+            self.next_mid = read_message_id(self.socket);
+
+            self.readers = self.build_reader_map();
+
+            self.config = self.read_config();
+            self.header = self.read_header();
+        end
+        
+        function [item, mid] = next(self)
+            
+            if self.next_mid == ismrmrd.Constants.CLOSE
+                throw(MException('Connection:noNextItem', 'No `next` item; connection is closed.'));
+            end
+            
+            disp("Reading message with id: " + num2str(self.next_mid));
+            
+            mid = self.next_mid;
+            reader = self.readers(mid);
+            item = reader(self.socket);
+            
+            self.next_mid = read_message_id(self.socket);
+        end
+        
+        function status = has_next(self)
+            status = self.next_mid ~= ismrmrd.Constants.CLOSE;
+        end
+        
+        function send(self, item)
+            
+        end
+        
+        function filter(self, f)
+            
+        end
+    end    
+   
+    methods (Access = private)
+        
+        function readers = build_reader_map(self)
+            % Maps do not support a wide range of key types. We're forced
+            % to use uint32, as uint16 is not supported.
+            readers = containers.Map('KeyType', 'uint32', 'ValueType', 'any');
+            readers(uint32(ismrmrd.Constants.CONFIG))      = @read_config;
+            readers(uint32(ismrmrd.Constants.HEADER))      = @read_header;
+            readers(uint32(ismrmrd.Constants.ACQUISITION)) = @read_acquisition;
+            readers(uint32(ismrmrd.Constants.WAVEFORM))    = @read_waveform;
+            readers(uint32(ismrmrd.Constants.IMAGE))       = @read_image;
+        end
+        
+        function config = read_config(self) 
+            [config, mid] = self.next();
+            assert(mid == ismrmrd.Constants.CONFIG);
+        end
+        
+        function header = read_header(self)
+            [header, mid] = self.next();
+            assert(mid == ismrmrd.Constants.HEADER);
+        end
+    end
+end
