@@ -1,5 +1,5 @@
 classdef Acquisition
-    
+
     properties (Access = public)
         header
         data 
@@ -7,8 +7,10 @@ classdef Acquisition
     end
     
     methods
-        function self = Acquisition(header)
+        function self = Acquisition(header, data, trajectory)
             self.header = header;
+            self.data = data;
+            self.trajectory = trajectory;
         end
         
         function tf = is_flag_set(self, flag)

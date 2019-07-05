@@ -1,23 +1,39 @@
 classdef Image
-    %IMAGE Summary of this class goes here
-    %   Detailed explanation goes here
     
-    properties
-        Property1
+    properties (Access = public, Constant)
+       % Image constants
+       USHORT       = uint16(1);
+       SHORT        = uint16(2);
+       UINT         = uint16(3);
+       INT          = uint16(4);
+       FLOAT        = uint16(5);
+       DOUBLE       = uint16(6);
+       CXFLOAT      = uint16(7);
+       CXDOUBLE     = uint16(8);
+       
+       MAGNITUDE    = uint16(1);
+       PHASE        = uint16(2);
+       REAL         = uint16(3);
+       IMAG         = uint16(4);
+       COMPLEX      = uint16(5);
+    end
+    
+    properties 
+        header
+        data
     end
     
     methods
-        function obj = Image(inputArg1,inputArg2)
-            %IMAGE Construct an instance of this class
-            %   Detailed explanation goes here
-            obj.Property1 = inputArg1 + inputArg2;
+        function self = Image(header, data)
+            self.header = header;
+            self.data = data;
         end
-        
-        function outputArg = method1(obj,inputArg)
-            %METHOD1 Summary of this method goes here
-            %   Detailed explanation goes here
-            outputArg = obj.Property1 + inputArg;
+    end
+    
+    methods (Static)
+        function image = from_data(data, acquisition)
+            header = create_image_header(data, acquisition.header);
+            image = ismrmrd.Image(header, data);
         end
     end
 end
-

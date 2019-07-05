@@ -1,6 +1,8 @@
 
 classdef Constants   
     properties (Access = public, Constant)
+        % Message identifiers
+        
         FILENAME      = uint16(1);
         CONFIG        = uint16(2);
         HEADER        = uint16(3);
