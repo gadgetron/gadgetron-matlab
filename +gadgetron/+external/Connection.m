@@ -86,7 +86,6 @@ classdef Connection < handle
             writers = gadgetron.util.list(  ...
                 write_image                 ...
             );
-                        
         end
     end
 end

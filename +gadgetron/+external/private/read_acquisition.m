@@ -1,23 +1,22 @@
 function acquisition = read_acquisition(socket)
-    header = fromBytes(read(socket, 340)');
+    header = fromBytes(read(socket, 340, 'uint8'));
     trajectory = read_trajectory(socket, header); 
     data = read_data(socket, header);
     acquisition = ismrmrd.Acquisition(header, data, trajectory);
 end
 
 function trajectory = read_trajectory(socket, header)
-    N = uint64(header.number_of_samples) * uint64(header.trajectory_dimensions);
+    N = int32(header.number_of_samples) * int32(header.trajectory_dimensions);
     trajectory = reshape( ...
-        read(socket, double(N), 'single'), ...
+        read(socket, N, 'single'), ...
         header.number_of_samples, ...
         header.trajectory_dimensions ...
     );
 end
 
 function data = read_data(socket, header)
-    N = uint64(header.active_channels) * uint64(header.number_of_samples) * 2;
-    % Read explodes when provided N as uint64 input. 'cause of course it does.
-    data = read(socket, double(N), 'single');
+    N = int32(header.active_channels) * int32(header.number_of_samples) * 2;
+    data = read(socket, N, 'single');
     data = reshape( ...
         complex(data(1:2:end), data(2:2:end)), ...
         header.number_of_samples, ...
@@ -26,12 +25,53 @@ function data = read_data(socket, header)
     data = transpose(data);
 end
 
+function header = read_header(socket)
+
+    function out = read(varargin)
+        out = socket.read(varargin{:});
+    end
+
+    header.version                  = read(1, 'uint16');
+    header.flags                    = read(1, 'uint64');
+    header.measurement_uid          = read(1, 'uint32');
+    header.scan_counter             = read(1, 'uint32');
+    header.acquisition_time_stamp   = read(1, 'uint32');
+    header.physiology_time_stamp    = read(3, 'uint32');
+    header.number_of_samples        = read(1, 'uint16');
+    header.available_channels       = read(1, 'uint16');
+    header.active_channels          = read(1, 'uint16');
+    header.channel_mask             = read(16, 'uint64');
+    header.discard_pre              = read(1, 'uint16');
+    header.discard_post             = read(1, 'uint16');
+    header.center_sample            = read(1, 'uint16');
+    header.encoding_space_ref       = read(1, 'uint16');
+    header.trajectory_dimensions    = read(1, 'uint16');
+    header.sample_time_us           = read(1, 'single');
+    header.position                 = read(3, 'single');
+    header.read_dir                 = read(3, 'single');
+    header.phase_dir                = read(3, 'single');
+    header.slice_dir                = read(3, 'single');
+    header.patient_table_position   = read(3, 'single');
+    header.idx.kspace_encode_step_1 = read(1, 'uint16');
+    header.idx.kspace_encode_step_2 = read(1, 'uint16');
+    header.idx.average              = read(1, 'uint16');
+    header.idx.slice                = read(1, 'uint16');
+    header.idx.contrast             = read(1, 'uint16');
+    header.idx.phase                = read(1, 'uint16');
+    header.idx.repetition           = read(1, 'uint16');
+    header.idx.set                  = read(1, 'uint16');
+    header.idx.segment              = read(1, 'uint16');
+    header.idx.user                 = read(8, 'uint16');
+    header.user_int                 = read(8, 'int32');
+    header.user_float               = read(8, 'single');   
+end
+
 function obj = fromBytes(bytes)
     % Convert from a byte array to an ISMRMRD AcquisitionHeader
     % This conforms to the memory layout of the C-struct
-
-    if size(bytes,1) ~= 340
-        error('Wrong number of bytes for AcquisitionHeader.')
+    
+    if size(bytes, 1) ~= 340
+        error('Wrong number of bytes for AcquisitionHeader: %d', size(bytes, 1))
     end
     N = size(bytes,2);
     
