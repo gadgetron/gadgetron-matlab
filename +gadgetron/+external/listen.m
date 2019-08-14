@@ -1,4 +1,4 @@
-function listen(port, handler)
+function listen(port, handler, varargin)
 
     path = fileparts(mfilename('fullpath'));
     javaaddpath(path);
@@ -9,7 +9,7 @@ function listen(port, handler)
     sock = socket.listen(port);
     connection = gadgetron.external.Connection(sock);
    
-    handler(connection);
+    handler(connection, varargin{:});    
     sock.write(ismrmrd.Constants.CLOSE);
 end
 
