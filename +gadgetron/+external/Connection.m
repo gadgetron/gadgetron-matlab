@@ -26,6 +26,10 @@ classdef Connection < handle
             self.header = self.read_header();
         end
         
+        function delete(self)
+            self.socket.write(ismrmrd.Constants.CLOSE);
+        end
+        
         function [item, mid] = next(self)
             
             if self.next_mid == ismrmrd.Constants.CLOSE

@@ -19,6 +19,5 @@ function main()
     connection = gadgetron.external.Connection(sock);
     
     feval(module, connection);
-    sock.write(ismrmrd.Constants.CLOSE);
 end
 

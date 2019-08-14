@@ -10,6 +10,5 @@ function listen(port, handler, varargin)
     connection = gadgetron.external.Connection(sock);
    
     handler(connection, varargin{:});    
-    sock.write(ismrmrd.Constants.CLOSE);
 end
 
