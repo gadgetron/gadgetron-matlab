@@ -17,16 +17,16 @@ classdef Socket < handle
         end
         
         function delete(self)
-            self.sock.close();
+            close(self.sock);
         end
         
         function out = read(self, n, type)
             nbytes = n * self.sizes(type);
-            out = typecast(self.sock.read(nbytes), type);
+            out = typecast(read(self.sock, nbytes), type);
         end
         
         function write(self, data)
-            self.sock.write(typecast(data, 'uint8'));
+            write(self.sock, typecast(data, 'uint8'));
         end
     end
 end

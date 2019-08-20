@@ -10,15 +10,12 @@ classdef Connection < handle
 
         readers 
         writers
-        
-        next_mid
     end
     
     methods (Access = public)
         function self = Connection(socket)
             self.socket = socket;
-            self.next_mid = read_message_id(self.socket);
-
+ 
             self.readers = gadgetron.external.Connection.build_reader_map();
             self.writers = gadgetron.external.Connection.build_writer_list();
 
@@ -31,20 +28,14 @@ classdef Connection < handle
         end
         
         function [item, mid] = next(self)
+            mid = read_message_id(self.socket);
             
-            if self.next_mid == ismrmrd.Constants.CLOSE
+            if mid == ismrmrd.Constants.CLOSE
                 throw(MException('Connection:noNextItem', 'No `next` item; connection is closed.'));
             end
             
-            mid = self.next_mid;
             reader = self.readers(mid);
             item = reader(self.socket);
-            
-            self.next_mid = read_message_id(self.socket);
-        end
-        
-        function status = has_next(self)
-            status = self.next_mid ~= ismrmrd.Constants.CLOSE;
         end
         
         function send(self, item)

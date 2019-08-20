@@ -16,7 +16,7 @@ classdef Constants
         WAVEFORM      = uint16(1026);
         IMAGE         = uint16(1022);
 
-        BUFFER        = uint16(1020);
-        IMAGE_ARRAY   = uint16(1021);
+        RECON_DATA    = uint16(1023);
+        IMAGE_ARRAY   = uint16(1024);
     end
 end
