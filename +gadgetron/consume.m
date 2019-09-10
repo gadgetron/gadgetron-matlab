@@ -1,7 +1,7 @@
-function consume(next, handler, varargin)
+function consume(next)
     try
         while true
-            handler(next(), varargin{:});
+            next();
         end
     catch ME
         if ~strcmp(ME.identifier, 'Connection:noNextItem'), rethrow(ME); end

@@ -9,6 +9,6 @@ function listen(port, handler, varargin)
     sock = socket.listen(port);
     connection = gadgetron.external.Connection(sock);
    
-    handler(connection, varargin{:});    
+    handler(connection, varargin{:});
 end
 
