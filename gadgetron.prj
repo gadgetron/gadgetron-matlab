@@ -38,16 +38,7 @@
 % **/*.bak
 %</param.exclude.filters>
     <param.exclude.pcodedmfiles>true</param.exclude.pcodedmfiles>
-    <param.examples>&lt;?xml version="1.0" encoding="utf-8"?&gt;
-&lt;examples&gt;
-   &lt;exampleCategory name="+external"&gt;
-      &lt;example name="listen" type="html"&gt;
-         &lt;file type="source"&gt;/+gadgetron/+external/html/listen.html&lt;/file&gt;
-         &lt;file type="main"&gt;/+gadgetron/+external/listen.m&lt;/file&gt;
-         &lt;file type="thumbnail"/&gt;
-      &lt;/example&gt;
-   &lt;/exampleCategory&gt;
-&lt;/examples&gt;</param.examples>
+    <param.examples />
     <param.demosxml />
     <param.apps />
     <param.registered.apps />
@@ -83,6 +74,7 @@
       <param.products.version />
       <param.platforms />
       <param.exclude.pcodedmfiles />
+      <param.examples />
       <param.demosxml />
       <param.apps />
       <param.registered.apps />
@@ -116,7 +108,6 @@
       <file>${PROJECT_ROOT}/+ismrmrd</file>
       <file>${PROJECT_ROOT}/+socket</file>
       <file>${PROJECT_ROOT}/README.txt</file>
-      <file>${PROJECT_ROOT}/demos.xml</file>
       <file>${PROJECT_ROOT}/gadgetron.external.SocketWrapper.jar</file>
       <file>${PROJECT_ROOT}/java</file>
     </fileset.rootfiles>
