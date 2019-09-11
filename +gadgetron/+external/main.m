@@ -1,9 +1,5 @@
 
 function main()
-
-    path = fileparts(mfilename('fullpath'));
-    javaaddpath(path);
-
     port = getenv('GADGETRON_EXTERNAL_PORT');
     module = getenv('GADGETRON_EXTERNAL_MODULE');
     

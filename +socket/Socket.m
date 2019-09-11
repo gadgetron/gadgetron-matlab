@@ -13,7 +13,7 @@ classdef Socket < handle
     
     methods
         function self = Socket(sock)
-            self.sock = javaObject('SocketWrapper', sock);
+            self.sock = javaObject('gadgetron.external.SocketWrapper', sock);
         end
         
         function delete(self)
