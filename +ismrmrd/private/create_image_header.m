@@ -32,3 +32,5 @@ function header = create_image_header(data, reference)
 
     header.attribute_string_len     = uint32(0);
 end
+
+

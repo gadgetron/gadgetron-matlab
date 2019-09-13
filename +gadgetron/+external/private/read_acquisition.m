@@ -22,48 +22,6 @@ function data = read_data(socket, header)
         header.number_of_samples, ...
         header.active_channels ...
     );
-    data = transpose(data);
-end
-
-function header = read_header(socket)
-
-    function out = read(varargin)
-        out = socket.read(varargin{:});
-    end
-
-    header.version                  = read(1, 'uint16');
-    header.flags                    = read(1, 'uint64');
-    header.measurement_uid          = read(1, 'uint32');
-    header.scan_counter             = read(1, 'uint32');
-    header.acquisition_time_stamp   = read(1, 'uint32');
-    header.physiology_time_stamp    = read(3, 'uint32');
-    header.number_of_samples        = read(1, 'uint16');
-    header.available_channels       = read(1, 'uint16');
-    header.active_channels          = read(1, 'uint16');
-    header.channel_mask             = read(16, 'uint64');
-    header.discard_pre              = read(1, 'uint16');
-    header.discard_post             = read(1, 'uint16');
-    header.center_sample            = read(1, 'uint16');
-    header.encoding_space_ref       = read(1, 'uint16');
-    header.trajectory_dimensions    = read(1, 'uint16');
-    header.sample_time_us           = read(1, 'single');
-    header.position                 = read(3, 'single');
-    header.read_dir                 = read(3, 'single');
-    header.phase_dir                = read(3, 'single');
-    header.slice_dir                = read(3, 'single');
-    header.patient_table_position   = read(3, 'single');
-    header.idx.kspace_encode_step_1 = read(1, 'uint16');
-    header.idx.kspace_encode_step_2 = read(1, 'uint16');
-    header.idx.average              = read(1, 'uint16');
-    header.idx.slice                = read(1, 'uint16');
-    header.idx.contrast             = read(1, 'uint16');
-    header.idx.phase                = read(1, 'uint16');
-    header.idx.repetition           = read(1, 'uint16');
-    header.idx.set                  = read(1, 'uint16');
-    header.idx.segment              = read(1, 'uint16');
-    header.idx.user                 = read(8, 'uint16');
-    header.user_int                 = read(8, 'int32');
-    header.user_float               = read(8, 'single');   
 end
 
 function bytes = toBytes(obj)
