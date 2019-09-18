@@ -7,7 +7,7 @@ classdef List
     
     methods (Access = public, Static)
         function nil = empty()
-            nil = gadgetron.util.Nil;
+            nil = gadgetron.lib.Nil;
         end
     end
         
@@ -20,7 +20,7 @@ classdef List
         end
         
         function list = cons(list, element)
-            list = gadgetron.util.List(list, element);
+            list = gadgetron.lib.List(list, element);
         end
         
         function element = head(list)
@@ -37,7 +37,7 @@ classdef List
         end
         
         function list = take(list, N)
-            if N == 0, list = gadgetron.util.Nil; end
+            if N == 0, list = gadgetron.lib.Nil; end
             list = cons(take(tail(list), N - 1), head(list));
         end
         

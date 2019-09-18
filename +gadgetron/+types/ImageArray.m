@@ -1,0 +1,3 @@
+classdef ImageArray < handle
+    
+end

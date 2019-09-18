@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.toolbox" plugin-version="1.0">
-  <configuration build-checksum="1707270082" file="/home/princess/Gradient/gadgetron-matlab/gadgetron.prj" location="/home/princess/Gradient/gadgetron-matlab" name="gadgetron" target="target.toolbox" target-name="Package Toolbox">
+  <configuration build-checksum="3744828527" file="/home/princess/Gradient/gadgetron-matlab/gadgetron.prj" location="/home/princess/Gradient/gadgetron-matlab" name="gadgetron" target="target.toolbox" target-name="Package Toolbox">
     <param.appname>gadgetron</param.appname>
     <param.authnamewatermark>Kristoffer Langeland Knudsen</param.authnamewatermark>
     <param.email>kristofferlknudsen@gradientsoftware.net</param.email>
@@ -8,7 +8,7 @@
     <param.description>This Gadgetron interface is based on ISMRMRD Datatypes, fascilitating direct communication with Gadgetron, or other ISMRMRD-based applications.
 NOTE: Requires Gadgetron 4.1 or newer; currently considered BLEEDING EDGE; not stable at all.</param.description>
     <param.screenshot />
-    <param.version>0.10.1</param.version>
+    <param.version>0.11.7</param.version>
     <param.output>${PROJECT_ROOT}/gadgetron.mltbx</param.output>
     <param.products.name />
     <param.products.id />
@@ -44,10 +44,10 @@ NOTE: Requires Gadgetron 4.1 or newer; currently considered BLEEDING EDGE; not s
     <param.apps />
     <param.registered.apps />
     <param.docs />
-    <param.getting.started.guide />
+    <param.getting.started.guide>${PROJECT_ROOT}/doc/GettingStarted.mlx</param.getting.started.guide>
     <param.matlabpath.excludes />
     <param.javaclasspath.excludes />
-    <param.exported.on.package>false</param.exported.on.package>
+    <param.exported.on.package>true</param.exported.on.package>
     <param.required.addons />
     <param.matlab.project.id />
     <param.matlab.project.name />
@@ -80,10 +80,8 @@ NOTE: Requires Gadgetron 4.1 or newer; currently considered BLEEDING EDGE; not s
       <param.apps />
       <param.registered.apps />
       <param.docs />
-      <param.getting.started.guide />
       <param.matlabpath.excludes />
       <param.javaclasspath.excludes />
-      <param.exported.on.package />
       <param.required.addons />
       <param.matlab.project.id />
       <param.matlab.project.name />

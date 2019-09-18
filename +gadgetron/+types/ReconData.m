@@ -1,0 +1,3 @@
+classdef ReconData < handle
+
+end

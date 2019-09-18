@@ -1,7 +1,7 @@
 classdef Nil
     methods (Access=public)
         function list = cons(nil, element)
-            list = gadgetron.util.List(nil, element);
+            list = gadgetron.lib.List(nil, element);
         end
         
         function nil = head(nil), end
