@@ -4,7 +4,7 @@ end
 
 function recon_bits = read_recon_bits(socket)
     n_recon_bits = read(socket, 1, 'uint64');
-    recon_bits = arrayfun(@(~) read_recon_bit(socket), range(1, n_recon_bits));
+    recon_bits = arrayfun(@(~) read_recon_bit(socket), 1:n_recon_bits);
 end
 
 function recon_bit = read_recon_bit(socket)
@@ -23,8 +23,10 @@ end
 function headers = read_header_array(socket)
     dims = read_vector(socket, 'uint64');
     n_bytes = 340 * prod(dims); % 340 bytes in an Acquisition header.
-    raw = reshape(read(socket, int32(n_bytes), 'uint8'), 340, []);
-    headers = reshape(parse_acquisition_headers(raw), dims);
+    headers = gadgetron.types.AcquisitionHeaderArray( ...
+        read(socket, int32(n_bytes), 'uint8'), ...
+        dims ...
+    );
 end
 
 function sampling_description = read_sampling_description(socket)
@@ -33,6 +35,9 @@ function sampling_description = read_sampling_description(socket)
     sampling_description.encoded_matrix = read(socket, 3, 'uint16');
     sampling_description.recon_matrix = read(socket, 3, 'uint16');
     sampling_description.sampling_limits = read_sampling_limits(socket);
+
+    % Sampling description C-struct has two bytes of padding.
+    read(socket, 2, 'uint8'); 
 end
 
 function sampling_limits = read_sampling_limits(socket)

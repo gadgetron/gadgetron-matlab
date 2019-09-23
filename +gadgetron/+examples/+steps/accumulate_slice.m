@@ -2,21 +2,24 @@ function next = accumulate_slice(input, header)
 
     matrix_size = header.encoding.encodedSpace.matrixSize;
 
-    function [slice, acquisition] = slice_from_acquisitions(acquisitions)
+    function slice = slice_from_acquisitions(acquisitions)
         disp("Assembling buffer from " + num2str(length(acquisitions)) + " acquisitions");
 
         acquisition = head(acquisitions);
         
-        slice = complex(zeros( ...
+        slice.reference = acquisition.header;        
+        slice.data = complex(zeros( ...
             size(acquisition.data, 2), ...
             size(acquisition.data, 1), ...
             matrix_size.y,             ...
-            matrix_size.z              ...
+            matrix_size.z,             ...
+            'single'                   ...
         ));
     
         for acq = acquisitions.asarray
-            slice(:, :, acq.header.idx.kspace_encode_step_1 + 1, acq.header.idx.kspace_encode_step_2 + 1) = ...
-                transpose(acq.data);
+            enc_step_1 = acq.header.idx.kspace_encode_step_1 + 1;
+            enc_step_2 = acq.header.idx.kspace_encode_step_2 + 1;
+            slice.data(:, :, enc_step_1, enc_step_2) = transpose(acq.data);
         end
     end
 
@@ -30,7 +33,7 @@ function next = accumulate_slice(input, header)
             if acquisition.is_flag_set(ismrmrd.Flags.ACQ_LAST_IN_SLICE), break; end
         end
         
-        [slice.data, slice.acquisition] = slice_from_acquisitions(acquisitions);
+        slice = slice_from_acquisitions(acquisitions);
     end
 
     next = @accumulate;

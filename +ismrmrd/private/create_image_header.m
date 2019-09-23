@@ -1,6 +1,6 @@
 function header = create_image_header(data, reference)
     header.version                  = uint16(1);
-    header.data_type                = uint16(0);
+    header.data_type                = uint16(select_data_type(data));
     header.flags                    = uint64(0);
     header.measurement_uid          = uint32(reference.measurement_uid);
     header.matrix_size              = uint16([size(data, 2) size(data, 3) size(data, 4)]);
@@ -33,4 +33,32 @@ function header = create_image_header(data, reference)
     header.attribute_string_len     = uint32(0);
 end
 
+function out = select_data_type(data)
+    switch class(data)
+        case 'int16'
+            out = ismrmrd.Image.SHORT;
+        case 'uint16'
+            out = ismrmrd.Image.USHORT;
+        case 'int32'
+            out = ismrmrd.Image.INT;
+        case 'uint32'
+            out = ismrmrd.Image.UINT;
+        case 'single'
+            if isreal(data)
+                out = ismrmrd.Image.FLOAT;
+            else
+                out = ismrmrd.Image.CXFLOAT;
+            end
+        case 'double'
+            if isreal(data)
+                out = ismrmrd.Image.DOUBLE;
+            else
+                out = ismrmrd.Image.CXDOUBLE;
+            end
+        otherwise
+            error("Unsupported image data type: %s", class(data))
+    end
+end
 
+
+    

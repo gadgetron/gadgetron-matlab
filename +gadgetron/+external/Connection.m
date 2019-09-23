@@ -74,6 +74,7 @@ classdef Connection < handle
             readers(uint32(ismrmrd.Constants.HEADER))      = @read_header;
             readers(uint32(ismrmrd.Constants.ACQUISITION)) = @read_acquisition;
             readers(uint32(ismrmrd.Constants.WAVEFORM))    = @read_waveform;
+            readers(uint32(ismrmrd.Constants.RECON_DATA))  = @read_recon_data;
             readers(uint32(ismrmrd.Constants.IMAGE))       = @read_image;
             readers(uint32(ismrmrd.Constants.BUCKET))      = @read_bucket;
         end

@@ -31,8 +31,8 @@ classdef Image
     end
     
     methods (Static)
-        function image = from_data(data, acquisition)
-            header = create_image_header(data, acquisition.header);
+        function image = from_data(data, reference)
+            header = create_image_header(data, reference);
             image = ismrmrd.Image(header, data);
         end
     end
