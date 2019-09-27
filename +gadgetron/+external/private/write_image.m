@@ -10,33 +10,33 @@ function write_image_header_and_data(socket, image)
     write_data(socket, image.data);
 end
 
-function write_header(socket, header)
-    write(socket, header.version);
-    write(socket, header.data_type);
-    write(socket, header.flags);
-    write(socket, header.measurement_uid);
-    write(socket, header.matrix_size);
-    write(socket, header.field_of_view);
-    write(socket, header.channels);
-    write(socket, header.position);
-    write(socket, header.read_dir);
-    write(socket, header.phase_dir);
-    write(socket, header.slice_dir);
-    write(socket, header.patient_table_position);
-    write(socket, header.average);
-    write(socket, header.slice);
-    write(socket, header.contrast);
-    write(socket, header.phase);
-    write(socket, header.repetition);
-    write(socket, header.set);
-    write(socket, header.acquisition_time_stamp);
-    write(socket, header.physiology_time_stamp);
-    write(socket, header.image_type);
-    write(socket, header.image_index);
-    write(socket, header.image_series_index);
-    write(socket, header.user_int);
-    write(socket, header.user_float);
-    write(socket, header.attribute_string_len);
+function write_header(socket, header)   
+    write(socket, uint16(header.version));
+    write(socket, uint16(header.data_type));
+    write(socket, uint64(header.flags));
+    write(socket, uint32(header.measurement_uid));
+    write(socket, uint16(header.matrix_size));
+    write(socket, single(header.field_of_view));
+    write(socket, uint16(header.channels));
+    write(socket, single(header.position));
+    write(socket, single(header.read_dir));
+    write(socket, single(header.phase_dir));
+    write(socket, single(header.slice_dir));
+    write(socket, single(header.patient_table_position));
+    write(socket, uint16(header.average));
+    write(socket, uint16(header.slice));
+    write(socket, uint16(header.contrast));
+    write(socket, uint16(header.phase));
+    write(socket, uint16(header.repetition));
+    write(socket, uint16(header.set));
+    write(socket, uint32(header.acquisition_time_stamp));
+    write(socket, uint32(header.physiology_time_stamp));
+    write(socket, uint16(header.image_type));
+    write(socket, uint16(header.image_index));
+    write(socket, uint16(header.image_series_index));
+    write(socket, int32(header.user_int));
+    write(socket, single(header.user_float));
+    write(socket, uint32(header.attribute_string_len));
 end
 
 function write_attribute_string(socket)

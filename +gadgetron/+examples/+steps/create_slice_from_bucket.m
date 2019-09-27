@@ -5,7 +5,7 @@ function next = create_slice_from_bucket(input, header)
     function slice = slice_from_bucket(bucket)
         disp("Assembling buffer from bucket containing " + num2str(bucket.data.count) + " acquisitions");
         
-        slice.reference = bucket.data.header(1);
+        slice.reference = structfun(@(arr) arr(1, :), bucket.data.header, 'UniformOutput', false);
         slice.data = complex(zeros( ...
             size(bucket.data.data, 2), ...
             size(bucket.data.data, 1), ...
@@ -15,8 +15,8 @@ function next = create_slice_from_bucket(input, header)
         ));
     
         for i = 1:bucket.data.count
-            encode_step_1 = bucket.data.header.idx.kspace_encode_step_1(i);
-            encode_step_2 = bucket.data.header.idx.kspace_encode_step_2(i);
+            encode_step_1 = bucket.data.header.kspace_encode_step_1(i);
+            encode_step_2 = bucket.data.header.kspace_encode_step_2(i);
             slice.data(:, :, encode_step_1 + 1, encode_step_2 + 1) = ...
                 transpose(squeeze(bucket.data.data(:, :, i)));            
         end

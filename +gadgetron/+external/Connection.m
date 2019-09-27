@@ -50,6 +50,14 @@ classdef Connection < handle
         function filter(self, f)
             
         end
+        
+        function add_reader(self, slot, reader)
+            self.readers(uint32(slot)) = reader;
+        end
+        
+        function add_writer(self, writer)
+            self.writers = cons(self.writers, writer);
+        end
     end    
    
     methods (Access = private)
@@ -80,8 +88,8 @@ classdef Connection < handle
         end
         
         function writers = build_writer_list()
-            writers = gadgetron.lib.list(  ...
-                write_image                 ...
+            writers = gadgetron.lib.list( ...
+                write_image ...
             );
         end
     end

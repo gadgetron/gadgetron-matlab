@@ -1,5 +1,5 @@
 function acquisition = read_acquisition(socket)
-    header = gadgetron.types.AcquisitionHeaderArray.parse(read(socket, 340, 'uint8'), 1);
+    header = parse_acquisition_headers(read(socket, 340, 'uint8'), 1);
     trajectory = read_trajectory(socket, header); 
     data = read_data(socket, header);
     acquisition = ismrmrd.Acquisition(header, data, trajectory);

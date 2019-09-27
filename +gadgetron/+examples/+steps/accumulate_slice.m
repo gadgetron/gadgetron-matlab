@@ -17,8 +17,8 @@ function next = accumulate_slice(input, header)
         ));
     
         for acq = acquisitions.asarray
-            enc_step_1 = acq.header.idx.kspace_encode_step_1 + 1;
-            enc_step_2 = acq.header.idx.kspace_encode_step_2 + 1;
+            enc_step_1 = acq.header.kspace_encode_step_1 + 1;
+            enc_step_2 = acq.header.kspace_encode_step_2 + 1;
             slice.data(:, :, enc_step_1, enc_step_2) = transpose(acq.data);
         end
     end
