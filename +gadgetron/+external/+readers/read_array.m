@@ -10,13 +10,14 @@ function arr = read_array(socket, type)
 end
 
 function arr = read_simple_array(socket, type)
-    dims = read_vector(socket, 'uint64');
+    dims = gadgetron.external.readers.read_vector(socket, 'uint64');
     arr = reshape(read(socket, prod(dims), type), dims);
 end
 
 function arr = read_complex_array(socket, type)
-    dims = read_vector(socket, 'uint64');
-    arr = reshape(as_interleaved_complex(read(socket, 2 * prod(dims), type)), dims);
+    dims = gadgetron.external.readers.read_vector(socket, 'uint64');
+    arr = reshape( ...
+        gadgetron.external.readers.as_interleaved_complex(read(socket, 2 * prod(dims), type)), ...
+        dims ...
+    );
 end
-
-

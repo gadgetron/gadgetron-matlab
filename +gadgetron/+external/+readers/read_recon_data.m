@@ -9,21 +9,21 @@ end
 
 function recon_bit = read_recon_bit(socket)
     recon_bit.buffer = read_recon_buffer(socket);
-    recon_bit.reference = read_optional(socket, @read_recon_buffer);
+    recon_bit.reference = gadgetron.external.readers.read_optional(socket, @read_recon_buffer);
 end
 
 function buffer = read_recon_buffer(socket)
-    buffer.data = read_array(socket, 'complex64');
-    buffer.trajectory = read_optional(socket, @read_array, 'single');
-    buffer.density = read_optional(socket, @read_array, 'single');
+    buffer.data = gadgetron.external.readers.read_array(socket, 'complex64');
+    buffer.trajectory = gadgetron.external.readers.read_optional(socket, @read_array, 'single');
+    buffer.density = gadgetron.external.readers.read_optional(socket, @read_array, 'single');
     buffer.headers = read_header_array(socket);
     buffer.sampling_description = read_sampling_description(socket);    
 end
 
 function headers = read_header_array(socket)
-    dims = read_vector(socket, 'uint64');
+    dims = gadgetron.external.readers.read_vector(socket, 'uint64');
     n_bytes = 340 * prod(dims); % 340 bytes in an Acquisition header.
-    headers = parse_acquisition_headers( ...
+    headers = gadgetron.external.readers.parse_acquisition_headers( ...
         read(socket, int32(n_bytes), 'uint8'), ...
         dims ...
     );

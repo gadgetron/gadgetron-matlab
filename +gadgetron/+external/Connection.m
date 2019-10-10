@@ -12,6 +12,10 @@ classdef Connection < handle
         writers
     end
     
+    properties (Access = private)
+        filter_predicate = @gadgetron.external.Connection.always_accept;
+    end
+    
     methods (Access = public)
         function self = Connection(socket)
             self.socket = socket;
@@ -28,14 +32,12 @@ classdef Connection < handle
         end
         
         function [item, mid] = next(self)
-            mid = read_message_id(self.socket);
+            [item, mid] = self.read_next();
             
-            if mid == ismrmrd.Constants.CLOSE
-                throw(MException('Connection:noNextItem', 'No `next` item; connection is closed.'));
+            while ~self.filter_predicate(mid, item)
+                self.send(item); % Forward item; it's not accepted by filter.
+                [item, mid] = self.read_next();
             end
-            
-            reader = self.readers(mid);
-            item = reader(self.socket);
         end
         
         function send(self, item)
@@ -48,7 +50,11 @@ classdef Connection < handle
         end
         
         function filter(self, f)
-            
+            if isa(f, 'char') || isa(f, 'string')
+                self.filter_predicate = @(~, item) isa(item, f);
+            else
+                self.filter_predicate = f;
+            end
         end
         
         function add_reader(self, slot, reader)
@@ -61,6 +67,17 @@ classdef Connection < handle
     end    
    
     methods (Access = private)
+        function [item, mid] = read_next(self)
+            mid = gadgetron.external.readers.read_message_id(self.socket);
+            
+            if mid == ismrmrd.Constants.CLOSE
+                throw(MException('Connection:noNextItem', 'No `next` item; connection is closed.'));
+            end
+            
+            reader = self.readers(mid);
+            item = reader(self.socket);
+        end
+
         function config = read_config(self) 
             [config, mid] = self.next();
             assert(mid == ismrmrd.Constants.CONFIG);
@@ -78,19 +95,21 @@ classdef Connection < handle
             % Maps do not support a wide range of key types. We're forced
             % to use uint32, as uint16 is not supported.
             readers = containers.Map('KeyType', 'uint32', 'ValueType', 'any');
-            readers(uint32(ismrmrd.Constants.CONFIG))      = @read_config;
-            readers(uint32(ismrmrd.Constants.HEADER))      = @read_header;
-            readers(uint32(ismrmrd.Constants.ACQUISITION)) = @read_acquisition;
-            readers(uint32(ismrmrd.Constants.WAVEFORM))    = @read_waveform;
-            readers(uint32(ismrmrd.Constants.RECON_DATA))  = @read_recon_data;
-            readers(uint32(ismrmrd.Constants.IMAGE))       = @read_image;
-            readers(uint32(ismrmrd.Constants.BUCKET))      = @read_bucket;
+            readers(uint32(ismrmrd.Constants.CONFIG))      = @gadgetron.external.readers.read_config;
+            readers(uint32(ismrmrd.Constants.HEADER))      = @gadgetron.external.readers.read_header;
+            readers(uint32(ismrmrd.Constants.ACQUISITION)) = @gadgetron.external.readers.read_acquisition;
+            readers(uint32(ismrmrd.Constants.WAVEFORM))    = @gadgetron.external.readers.read_waveform;
+            readers(uint32(ismrmrd.Constants.RECON_DATA))  = @gadgetron.external.readers.read_recon_data;
+            readers(uint32(ismrmrd.Constants.IMAGE))       = @gadgetron.external.readers.read_image;
+            readers(uint32(ismrmrd.Constants.BUCKET))      = @gadgetron.external.readers.read_bucket;
         end
         
         function writers = build_writer_list()
             writers = gadgetron.lib.list( ...
-                write_image ...
+                gadgetron.external.writers.write_image ...
             );
         end
+        
+        function tf = always_accept(~, ~), tf = true; end
     end
 end
