@@ -35,7 +35,8 @@ classdef Connection < handle
             [item, mid] = self.read_next();
             
             while ~self.filter_predicate(mid, item)
-                self.send(item); % Forward item; it's not accepted by filter.
+                fprintf("Bypassing item: %s\n", class(item));
+                self.send(item);
                 [item, mid] = self.read_next();
             end
         end
@@ -106,7 +107,9 @@ classdef Connection < handle
         
         function writers = build_writer_list()
             writers = gadgetron.lib.list( ...
-                gadgetron.external.writers.write_image ...
+                gadgetron.external.writers.write_image, ...
+                gadgetron.external.writers.write_acquisition, ...
+                gadgetron.external.writers.write_waveform ...
             );
         end
         

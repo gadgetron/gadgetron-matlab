@@ -1,5 +1,6 @@
 
 function simple_recon(connection)
+
     disp("Matlab reconstruction running.") 
     
     next = gadgetron.examples.steps.noise_adjust(@connection.next, connection.header);
