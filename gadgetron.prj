@@ -8,7 +8,7 @@
     <param.description>This Gadgetron interface is based on ISMRMRD Datatypes, fascilitating direct communication with Gadgetron, or other ISMRMRD-based applications.
 NOTE: Requires Gadgetron 4.1 or newer; currently considered BLEEDING EDGE; not stable at all.</param.description>
     <param.screenshot />
-    <param.version>0.11.8</param.version>
+    <param.version>1.11.8</param.version>
     <param.output>${PROJECT_ROOT}/gadgetron.mltbx</param.output>
     <param.products.name />
     <param.products.id />
@@ -57,7 +57,7 @@ NOTE: Requires Gadgetron 4.1 or newer; currently considered BLEEDING EDGE; not s
     <param.compatiblity.windows>true</param.compatiblity.windows>
     <param.compatiblity.macos>true</param.compatiblity.macos>
     <param.compatiblity.linux>true</param.compatiblity.linux>
-    <param.compatiblity.matlabonline>true</param.compatiblity.matlabonline>
+    <param.compatiblity.matlabonline>false</param.compatiblity.matlabonline>
     <param.installation.map />
     <param.additional.sw.names />
     <param.additional.sw.licenses />
@@ -88,7 +88,6 @@ NOTE: Requires Gadgetron 4.1 or newer; currently considered BLEEDING EDGE; not s
       <param.compatiblity.windows />
       <param.compatiblity.macos />
       <param.compatiblity.linux />
-      <param.compatiblity.matlabonline />
       <param.installation.map />
       <param.additional.sw.names />
       <param.additional.sw.licenses />
@@ -127,7 +126,7 @@ NOTE: Requires Gadgetron 4.1 or newer; currently considered BLEEDING EDGE; not s
       <vista>false</vista>
       <linux>true</linux>
       <solaris>false</solaris>
-      <osver>5.2.15-200.fc30.x86_64</osver>
+      <osver>5.3.6-200.fc30.x86_64</osver>
       <os32>false</os32>
       <os64>true</os64>
       <arch>glnxa64</arch>
