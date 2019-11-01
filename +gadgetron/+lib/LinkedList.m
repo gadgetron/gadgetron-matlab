@@ -1,4 +1,4 @@
-classdef List
+classdef LinkedList
 
     properties (Access = private)
         nxt;
@@ -14,13 +14,13 @@ classdef List
     
     methods (Access = public)
         
-        function list = List(tail, elm)
+        function list = LinkedList(tail, elm)
             list.nxt = tail;
             list.elm = elm;
         end
         
         function list = cons(list, element)
-            list = gadgetron.lib.List(list, element);
+            list = gadgetron.lib.LinkedList(list, element);
         end
         
         function element = head(list)
