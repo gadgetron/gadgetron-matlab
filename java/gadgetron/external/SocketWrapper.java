@@ -27,7 +27,7 @@ public class SocketWrapper {
         }
         return buffer;
     }
-
+    
     public void write(byte[] bytes) throws IOException { output.write(bytes); }
     public void close() throws IOException { socket.close(); }
 }

@@ -3,7 +3,7 @@ function header = create_image_header(data, reference)
     header.data_type                = select_data_type(data);
     header.flags                    = 0;
     header.measurement_uid           = reference.measurement_uid;
-    header.matrix_size              = [size(data, 1) size(data, 2) size(data, 3)];
+    header.matrix_size              = [size(data, 2) size(data, 3) size(data, 4)];
     header.field_of_view            = [0 0 0];
     header.channels                 = size(data, 1);
 

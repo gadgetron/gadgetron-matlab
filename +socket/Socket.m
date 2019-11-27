@@ -22,7 +22,7 @@ classdef Socket < handle
         
         function out = read(self, n, type)
             nbytes = n * self.sizes(type);
-            out = typecast(read(self.sock, nbytes), type);
+            out = typecast(read(self.sock, int32(nbytes)), type);
         end
         
         function write(self, data)
