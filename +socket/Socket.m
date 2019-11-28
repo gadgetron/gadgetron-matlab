@@ -21,8 +21,26 @@ classdef Socket < handle
         end
         
         function out = read(self, n, type)
-            nbytes = n * self.sizes(type);
-            out = typecast(read(self.sock, int32(nbytes)), type);
+            total_bytes_to_read = n * self.sizes(type);
+
+            % Java can only have around 2^31 elements in an array. If we're
+            % reading something larger, we need to read it in chunks. 
+            
+            array_size_limit = intmax('int32') - 8; % Java uses a few words for array header stuff.
+            bytes = zeros(total_bytes_to_read, 1, 'int8');
+            current_index = 0;
+            
+            while current_index < total_bytes_to_read
+                nbytes = min(int32(total_bytes_to_read - current_index), array_size_limit);
+                
+                next_index = current_index + nbytes;
+                
+                bytes(current_index + 1:next_index) = read(self.sock, nbytes);
+               
+                current_index = next_index;
+            end
+            
+            out = typecast(bytes, type);
         end
         
         function write(self, data)
