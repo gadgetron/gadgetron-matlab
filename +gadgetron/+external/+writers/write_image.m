@@ -1,10 +1,10 @@
 function writer = write_image()
-    writer.accepts = @(item) isa(item, 'ismrmrd.Image');
+    writer.accepts = @(item) isa(item, 'gadgetron.types.Image');
     writer.write = @write_image_header_and_data;
 end
 
 function write_image_header_and_data(socket, image)
-    write(socket, ismrmrd.Constants.IMAGE);
+    write(socket, gadgetron.Constants.IMAGE);
     write_header(socket, image.header, image.attribute_string);
     write_attribute_string(socket, image.attribute_string);
     write_data(socket, image.data);
@@ -40,7 +40,7 @@ function write_header(socket, header, attribute_string)
 end
 
 function write_attribute_string(socket, attribute_string)
-    gadgetron.external.writers.write_string(socket, 'uint64', attribute_string);
+    gadgetron.external.writers.write_string(socket, attribute_string, 'uint64');
 end
 
 function write_data(socket, data)

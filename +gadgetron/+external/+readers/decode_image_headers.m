@@ -1,5 +1,5 @@
 
-function headers = parse_image_headers(bytes, dims)
+function headers = decode_image_headers(bytes, dims)
 
     bytes = reshape(bytes, 198, []);
     N = size(bytes, 2);            

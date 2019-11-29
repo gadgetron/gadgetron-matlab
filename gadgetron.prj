@@ -6,9 +6,9 @@
     <param.company>Gradient Software</param.company>
     <param.summary>*EXPERIMENTAL* Gadgetron MATLAB interface.</param.summary>
     <param.description>This Gadgetron interface is based on ISMRMRD Datatypes, fascilitating direct communication with Gadgetron, or other ISMRMRD-based applications.
-NOTE: Requires Gadgetron 4.1 or newer; currently considered BLEEDING EDGE; not stable at all.</param.description>
+NOTE: Requires Gadgetron 4.1 or newer; currently considered BLEEDING EDGE; the interface is still likely to change.</param.description>
     <param.screenshot />
-    <param.version>1.11.10</param.version>
+    <param.version>1.15.0</param.version>
     <param.output>${PROJECT_ROOT}/gadgetron.mltbx</param.output>
     <param.products.name />
     <param.products.id />
@@ -65,6 +65,8 @@ NOTE: Requires Gadgetron 4.1 or newer; currently considered BLEEDING EDGE; not s
     <param.additional.sw.mac.url />
     <param.additional.sw.linux.url />
     <unset>
+      <param.email />
+      <param.company />
       <param.screenshot />
       <param.output />
       <param.products.name />
@@ -100,8 +102,8 @@ NOTE: Requires Gadgetron 4.1 or newer; currently considered BLEEDING EDGE; not s
     </fileset.rootdir>
     <fileset.rootfiles>
       <file>${PROJECT_ROOT}/+gadgetron</file>
-      <file>${PROJECT_ROOT}/+ismrmrd</file>
       <file>${PROJECT_ROOT}/+socket</file>
+      <file>${PROJECT_ROOT}/LICENSE</file>
       <file>${PROJECT_ROOT}/README.txt</file>
       <file>${PROJECT_ROOT}/gadgetron.external.SocketWrapper.jar</file>
       <file>${PROJECT_ROOT}/java</file>
@@ -126,7 +128,7 @@ NOTE: Requires Gadgetron 4.1 or newer; currently considered BLEEDING EDGE; not s
       <vista>false</vista>
       <linux>true</linux>
       <solaris>false</solaris>
-      <osver>5.3.6-200.fc30.x86_64</osver>
+      <osver>5.3.11-200.fc30.x86_64</osver>
       <os32>false</os32>
       <os64>true</os64>
       <arch>glnxa64</arch>

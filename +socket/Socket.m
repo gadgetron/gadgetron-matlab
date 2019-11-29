@@ -44,7 +44,7 @@ classdef Socket < handle
         end
         
         function write(self, data)
-            write(self.sock, typecast(data, 'uint8'));
+            write(self.sock, typecast(data, 'int8'));
         end
     end
 end

@@ -1,4 +1,4 @@
-function headers = parse_waveform_headers(bytes, dims)
+function headers = decode_waveform_headers(bytes, dims)
 
     bytes = reshape(bytes, 40, []);
     N = size(bytes, 2);            

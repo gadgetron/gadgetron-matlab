@@ -1,4 +1,19 @@
-function headers = parse_acquisition_headers(bytes, dims)
+function bytes = encode_acquisition_headers(headers)
+
+    nheaders = numel(headers.version);
+
+    bytes = zeros(340, nheaders, 'int8');
+
+    function bytes = byte_view(array)
+        bytes = typecast(reshape(array, 1, nheaders, []), 'int8');
+    end
+    
+    bytes(  1:  2, :) = byte_view(headers.version);
+end
+
+
+
+function headers = decode_acquisition_headers(bytes, dims)
     % Convert from a byte array to a ISMRMRD AcquisitionHeaders
     % This conforms to the memory layout of the C-struct
 

@@ -35,7 +35,7 @@ classdef Image
     methods (Static)
         function image = from_data(data, reference)
             header = create_image_header(data, reference);
-            image = ismrmrd.Image(header, "", data);
+            image = gadgetron.types.Image(header, "", data);
         end
     end
 end

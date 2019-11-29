@@ -1,0 +1,43 @@
+function image_array = read_image_array(socket)
+    image_array = gadgetron.types.ImageArray( ...
+        read_data(socket), ...
+        read_headers(socket), ...
+        read_meta_container(socket), ...
+        read_optional_waveforms(socket), ...
+        read_optional_acq_headers(socket) ...    
+    );    
+end
+
+function data = read_data(socket)
+    data = gadgetron.external.readers.read_array(socket, 'complex64');
+end
+
+function headers = read_headers(socket)
+    headers = gadgetron.external.readers.read_header_array( ...
+        socket, 198, ...
+        @gadgetron.external.readers.decode_image_headers ...
+    );
+end
+
+function meta = read_meta_container(socket)
+    size = read(socket, 1, 'uint64');
+    meta = arrayfun(@(~) gadgetron.external.readers.read_string(socket, 'uint64'), 1:size);
+end
+
+function waveform = read_optional_waveforms(socket)
+
+    function wav = read_waveforms(socket)
+        size = read(socket, 1, 'uint64');
+        wav = arrayfun(@(~) gadgetron.external.readers.read_waveform(socket), 1:size, 'UniformOutput', false);
+    end
+
+    waveform = gadgetron.external.readers.read_optional(socket, @read_waveforms);
+end
+
+function acq_headers = read_optional_acq_headers(socket)
+    acq_headers = gadgetron.external.readers.read_optional(socket, ...
+        @gadgetron.external.readers.read_header_array, ...
+        340, ... 
+        @gadgetron.external.readers.decode_acquisition_headers ...
+    );
+end

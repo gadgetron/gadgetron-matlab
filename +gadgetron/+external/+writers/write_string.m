@@ -1,4 +1,4 @@
-function write_string(socket, size, string)
+function write_string(socket, string, size)
     length = cast(strlength(string), size);
 
     write(socket, length);

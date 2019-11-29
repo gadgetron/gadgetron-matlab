@@ -24,7 +24,7 @@ function next = noise_adjust(input, header)
     end
 
     function acquisition = handle_noise(acquisition)       
-        if acquisition.is_flag_set(ismrmrd.Flags.ACQ_IS_NOISE_MEASUREMENT)
+        if acquisition.is_flag_set(acquisition.ACQ_IS_NOISE_MEASUREMENT)
             noise_matrix = calculate_whitening_transformation(acquisition.data);
             noise_dwell_time = acquisition.header.sample_time_us;
             acquisition = handle_noise(input()); % Recursive call; we output the next item.

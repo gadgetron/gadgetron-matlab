@@ -5,7 +5,7 @@ function main()
     module = getenv('GADGETRON_EXTERNAL_MODULE');
     
     if isempty(port) || isempty(module)
-        fprintf("Gadgetron External MATLAB Module v. %s\n", gadgetron.version);
+        fprintf("Gadgetron External MATLAB Module\n");
         return
     end
     

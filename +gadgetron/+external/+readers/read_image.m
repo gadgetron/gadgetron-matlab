@@ -1,8 +1,8 @@
 function image = read_image(socket)
-    header = gadgetron.external.readers.parse_image_headers(read(socket, 198, 'uint8'), 1);
+    header = gadgetron.external.readers.decode_image_headers(read(socket, 198, 'uint8'), 1);
     attribute_string = read_attribute_string(socket);
     data = read_data(socket, header);
-    image = ismrmrd.Image(header, attribute_string, data);
+    image = gadgetron.types.Image(header, attribute_string, data);
 end
 
 function attribute_string = read_attribute_string(socket)

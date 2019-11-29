@@ -30,7 +30,7 @@ function next = accumulate_slice(input, header)
         while true
             acquisition = input();
             acquisitions = cons(acquisitions, acquisition);
-            if acquisition.is_flag_set(ismrmrd.Flags.ACQ_LAST_IN_SLICE), break; end
+            if acquisition.is_flag_set(acquisition.ACQ_LAST_IN_SLICE), break; end
         end
         
         slice = slice_from_acquisitions(acquisitions);

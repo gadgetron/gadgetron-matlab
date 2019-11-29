@@ -28,7 +28,7 @@ classdef Connection < handle
         end
         
         function delete(self)
-            self.socket.write(ismrmrd.Constants.CLOSE);
+            self.socket.write(gadgetron.Constants.CLOSE);
         end
         
         function [item, mid] = next(self)
@@ -71,7 +71,7 @@ classdef Connection < handle
         function [item, mid] = read_next(self)
             mid = gadgetron.external.readers.read_message_id(self.socket);
             
-            if mid == ismrmrd.Constants.CLOSE
+            if mid == gadgetron.Constants.CLOSE
                 throw(MException('Connection:noNextItem', 'No `next` item; connection is closed.'));
             end
             
@@ -81,13 +81,13 @@ classdef Connection < handle
 
         function config = read_config(self) 
             [config, mid] = self.next();
-            assert(mid == ismrmrd.Constants.CONFIG);
+            assert(mid == gadgetron.Constants.CONFIG);
         end
         
         function header = read_header(self)
             [raw, mid] = self.next();
-            assert(mid == ismrmrd.Constants.HEADER);
-            header = ismrmrd.xml.deserialize(raw);
+            assert(mid == gadgetron.Constants.HEADER);
+            header = gadgetron.types.xml.deserialize(raw);
         end
     end
     
@@ -96,13 +96,14 @@ classdef Connection < handle
             % Maps do not support a wide range of key types. We're forced
             % to use uint32, as uint16 is not supported.
             readers = containers.Map('KeyType', 'uint32', 'ValueType', 'any');
-            readers(uint32(ismrmrd.Constants.CONFIG))      = @gadgetron.external.readers.read_config;
-            readers(uint32(ismrmrd.Constants.HEADER))      = @gadgetron.external.readers.read_header;
-            readers(uint32(ismrmrd.Constants.ACQUISITION)) = @gadgetron.external.readers.read_acquisition;
-            readers(uint32(ismrmrd.Constants.WAVEFORM))    = @gadgetron.external.readers.read_waveform;
-            readers(uint32(ismrmrd.Constants.RECON_DATA))  = @gadgetron.external.readers.read_recon_data;
-            readers(uint32(ismrmrd.Constants.IMAGE))       = @gadgetron.external.readers.read_image;
-            readers(uint32(ismrmrd.Constants.BUCKET))      = @gadgetron.external.readers.read_bucket;
+            readers(uint32(gadgetron.Constants.CONFIG))      = @gadgetron.external.readers.read_config;
+            readers(uint32(gadgetron.Constants.HEADER))      = @gadgetron.external.readers.read_header;
+            readers(uint32(gadgetron.Constants.ACQUISITION)) = @gadgetron.external.readers.read_acquisition;
+            readers(uint32(gadgetron.Constants.WAVEFORM))    = @gadgetron.external.readers.read_waveform;
+            readers(uint32(gadgetron.Constants.RECON_DATA))  = @gadgetron.external.readers.read_recon_data;
+            readers(uint32(gadgetron.Constants.IMAGE_ARRAY)) = @gadgetron.external.readers.read_image_array;
+            readers(uint32(gadgetron.Constants.IMAGE))       = @gadgetron.external.readers.read_image;
+            readers(uint32(gadgetron.Constants.BUCKET))      = @gadgetron.external.readers.read_bucket;
         end
         
         function writers = build_writer_list()
