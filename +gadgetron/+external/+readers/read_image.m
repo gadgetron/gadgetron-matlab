@@ -26,23 +26,23 @@ function [nelements, type, transformation] = examine_header(header)
     transformation = @(i) i;
 
     switch header.data_type
-        case ismrmrd.Image.USHORT
+        case gadgetron.types.Image.USHORT
             type = 'uint16';            
-        case ismrmrd.Image.SHORT
+        case gadgetron.types.Image.SHORT
             type = 'int16';
-        case ismrmrd.Image.UINT
+        case gadgetron.types.Image.UINT
             type = 'uint32';
-        case ismrmrd.Image.INT
+        case gadgetron.types.Image.INT
             type = 'int32';
-        case ismrmrd.Image.FLOAT
+        case gadgetron.types.Image.FLOAT
             type = 'single';            
-        case ismrmrd.Image.DOUBLE
+        case gadgetron.types.Image.DOUBLE
             type = 'double';
-        case ismrmrd.Image.CXFLOAT
+        case gadgetron.types.Image.CXFLOAT
             nelements = 2 * nelements;
             type = 'single';
             transformation = @gadgetron.external.readers.as_interleaved_complex;
-        case ismrmrd.Image.CXDOUBLE
+        case gadgetron.types.Image.CXDOUBLE
             nelements = 2 * nelements;
             type = 'double';
             transformation = @gadgetron.external.readers.as_interleaved_complex;

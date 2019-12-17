@@ -84,8 +84,6 @@ NOTE: Requires Gadgetron 4.1 or newer; currently considered BLEEDING EDGE; the i
       <param.required.addons />
       <param.matlab.project.id />
       <param.matlab.project.name />
-      <param.release.start />
-      <param.release.end />
       <param.release.current.only />
       <param.compatiblity.windows />
       <param.compatiblity.macos />
