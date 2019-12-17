@@ -20,12 +20,14 @@ classdef Image
     
     properties 
         header
+        attribute_string
         data
     end
     
     methods
-        function self = Image(header, data)
+        function self = Image(header, attribute_string, data)
             self.header = header;
+            self.attribute_string = attribute_string;
             self.data = data;
         end
     end
@@ -33,7 +35,7 @@ classdef Image
     methods (Static)
         function image = from_data(data, reference)
             header = create_image_header(data, reference);
-            image = ismrmrd.Image(header, data);
+            image = gadgetron.types.Image(header, "", data);
         end
     end
 end

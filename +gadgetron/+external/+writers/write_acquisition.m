@@ -1,16 +1,17 @@
 function writer = write_acquisition()
-    writer.accepts = @(item) isa(item, 'ismrmrd.Acquisition');
+    writer.accepts = @(item) isa(item, 'gadgetron.types.Acquisition');
     writer.write = @write_acquisition_header_and_data;
 end
 
 function write_acquisition_header_and_data(socket, acquisition)
-    write(socket, ismrmrd.Constants.ACQUISITION);
+    write(socket, gadgetron.Constants.ACQUISITION);
     write_header(socket, acquisition.header);
     write_trajectory(socket, acquisition.trajectory);
     write_data(socket, acquisition.data);
 end
 
 function write_trajectory(socket, trajectory)
+    if isempty(trajectory), return; end
     write(socket, reshape(trajectory, 1, []));
 end
 

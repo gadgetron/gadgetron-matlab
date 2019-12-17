@@ -1,5 +1,5 @@
 function writer = write_recon_data()
-    writer.accepts = @(item) isa(item, 'ismrmrd.Image');
+    writer.accepts = @(item) isa(item, 'gadgetron.types.ReconData');
     writer.write = @write_recondata_to_socket;
 end
 

@@ -1,10 +1,10 @@
 function writer = write_waveform()
-    writer.accepts = @(item) isa(item, 'ismrmrd.Waveform');
+    writer.accepts = @(item) isa(item, 'gadgetron.types.Waveform');
     writer.write = @write_waveform_header_and_data;
 end
 
 function write_waveform_header_and_data(socket, waveform)
-    write(socket, ismrmrd.Constants.WAVEFORM);
+    write(socket, gadgetron.Constants.WAVEFORM);
     write_header(socket, waveform.header);
     write_data(socket, waveform.data);
 end

@@ -18,8 +18,8 @@ function tiny_recon(connection)
             data = gadgetron.lib.fft.cifftn(data, [2, 3, 4]);
             data = sqrt(sum(square(abs(data)), 1));
 
-            image = ismrmrd.Image.from_data(data, reference_header(recon_data));
-            image.header.image_type = ismrmrd.Image.MAGNITUDE;
+            image = gadgetron.types.Image.from_data(data, reference_header(recon_data));
+            image.header.image_type = gadgetron.types.Image.MAGNITUDE;
 
             disp("Sending image to client.");
             connection.send(image);

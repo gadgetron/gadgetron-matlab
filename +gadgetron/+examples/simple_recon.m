@@ -11,7 +11,7 @@ function simple_recon(connection)
     next = gadgetron.examples.steps.create_ismrmrd_image(next);
     next = gadgetron.examples.steps.send_image_to_client(next, connection);
     
-    connection.filter('ismrmrd.Acquisition')
+    connection.filter('gadgetron.types.Acquisition')
 
     tic, gadgetron.consume(next); toc
 end

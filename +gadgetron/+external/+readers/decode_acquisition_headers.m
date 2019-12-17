@@ -1,4 +1,4 @@
-function headers = parse_acquisition_headers(bytes, dims)
+function headers = decode_acquisition_headers(bytes, dims)
     % Convert from a byte array to a ISMRMRD AcquisitionHeaders
     % This conforms to the memory layout of the C-struct
 

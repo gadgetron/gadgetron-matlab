@@ -1,6 +1,6 @@
-classdef Flags
-    
-    properties (Access = public, Constant)
+classdef Acquisition
+
+        properties (Access = public, Constant)
         % Acquisition flags
         ACQ_FIRST_IN_ENCODE_STEP1               = bitshift(uint64(1), 0)
         ACQ_LAST_IN_ENCODE_STEP1                = bitshift(uint64(1), 1)
@@ -44,4 +44,30 @@ classdef Flags
         ACQ_USER7                               = bitshift(uint64(1), 62)
         ACQ_USER8                               = bitshift(uint64(1), 63)
     end   
+    
+    properties (Access = public)
+        header
+        data 
+        trajectory 
+    end
+    
+    methods
+        function self = Acquisition(header, data, trajectory)
+            self.header = header;
+            self.data = data;
+            self.trajectory = trajectory;
+        end
+        
+        function tf = isequal(self, other)
+            tf = ...
+                isequal(self.header, other.header) && ...
+                isequal(self.data, other.data) && ...
+                isequal(self.trajectory, other.trajectory);
+        end
+        
+        function tf = is_flag_set(self, flag)
+            tf = bitand(self.header.flags, flag);
+        end
+    end
 end
+

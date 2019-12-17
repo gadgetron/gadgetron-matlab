@@ -1,16 +1,16 @@
 function writer = write_image()
-    writer.accepts = @(item) isa(item, 'ismrmrd.Image');
+    writer.accepts = @(item) isa(item, 'gadgetron.types.Image');
     writer.write = @write_image_header_and_data;
 end
 
 function write_image_header_and_data(socket, image)
-    write(socket, ismrmrd.Constants.IMAGE);
-    write_header(socket, image.header);
-    write_attribute_string(socket);
+    write(socket, gadgetron.Constants.IMAGE);
+    write_header(socket, image.header, image.attribute_string);
+    write_attribute_string(socket, image.attribute_string);
     write_data(socket, image.data);
 end
 
-function write_header(socket, header)   
+function write_header(socket, header, attribute_string)   
     write(socket, uint16(header.version));
     write(socket, uint16(header.data_type));
     write(socket, uint64(header.flags));
@@ -36,12 +36,11 @@ function write_header(socket, header)
     write(socket, uint16(header.image_series_index));
     write(socket, int32(header.user_int));
     write(socket, single(header.user_float));
-    write(socket, uint32(header.attribute_string_len));
+    write(socket, uint32(strlength(attribute_string)));
 end
 
-function write_attribute_string(socket)
-    % We don't support attribute strings at the moment.
-    write(socket, uint64(0));
+function write_attribute_string(socket, attribute_string)
+    gadgetron.external.writers.write_string(socket, attribute_string, 'uint64');
 end
 
 function write_data(socket, data)
