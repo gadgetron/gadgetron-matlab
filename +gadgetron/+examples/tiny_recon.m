@@ -31,7 +31,7 @@ end
 
 function reference = reference_header(recon_data)
     % We pick the first header from the header arrays - we need it to initialize the image meta data.    
-    reference = structfun(@(arr) arr(1, :), recon_data.bits.buffer.headers, 'UniformOutput', false);
+    reference = structfun(@(arr) arr(:, 1)', recon_data.bits.buffer.headers, 'UniformOutput', false);
 end
 
 function x = square(x), x = x .^ 2; end
