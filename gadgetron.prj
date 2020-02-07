@@ -8,7 +8,7 @@
     <param.description>This Gadgetron interface is based on ISMRMRD Datatypes, fascilitating direct communication with Gadgetron, or other ISMRMRD-based applications.
 NOTE: Requires Gadgetron 4.1 or newer; currently considered BLEEDING EDGE; the interface is still likely to change.</param.description>
     <param.screenshot />
-    <param.version>2.0.2</param.version>
+    <param.version>2.0.3</param.version>
     <param.output>${PROJECT_ROOT}/gadgetron.mltbx</param.output>
     <param.products.name />
     <param.products.id />
@@ -126,7 +126,7 @@ NOTE: Requires Gadgetron 4.1 or newer; currently considered BLEEDING EDGE; the i
       <vista>false</vista>
       <linux>true</linux>
       <solaris>false</solaris>
-      <osver>5.4.7-100.fc30.x86_64</osver>
+      <osver>5.4.17-100.fc30.x86_64</osver>
       <os32>false</os32>
       <os64>true</os64>
       <arch>glnxa64</arch>
