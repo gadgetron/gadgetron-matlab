@@ -1,4 +1,4 @@
-classdef ImageArray < handle
+classdef ImageArray
     
     properties
         data
