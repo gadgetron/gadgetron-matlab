@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.toolbox" plugin-version="1.0">
-  <configuration build-checksum="3933208146" file="/home/princess/Gradient/gadgetron-matlab/gadgetron.prj" location="/home/princess/Gradient/gadgetron-matlab" name="gadgetron" target="target.toolbox" target-name="Package Toolbox">
+  <configuration build-checksum="2684096207" file="/home/princess/Gradient/gadgetron-matlab/gadgetron.prj" location="/home/princess/Gradient/gadgetron-matlab" name="gadgetron" target="target.toolbox" target-name="Package Toolbox">
     <param.appname>gadgetron</param.appname>
     <param.authnamewatermark>Kristoffer Langeland Knudsen</param.authnamewatermark>
     <param.email>kristofferlknudsen@gradientsoftware.net</param.email>
@@ -8,7 +8,7 @@
     <param.description>This Gadgetron interface is based on ISMRMRD Datatypes, fascilitating direct communication with Gadgetron, or other ISMRMRD-based applications.
 NOTE: Requires Gadgetron 4.1 or newer; currently considered BLEEDING EDGE; the interface is still likely to change.</param.description>
     <param.screenshot />
-    <param.version>2.0.3</param.version>
+    <param.version>2.0.4</param.version>
     <param.output>${PROJECT_ROOT}/gadgetron.mltbx</param.output>
     <param.products.name />
     <param.products.id />
@@ -126,7 +126,7 @@ NOTE: Requires Gadgetron 4.1 or newer; currently considered BLEEDING EDGE; the i
       <vista>false</vista>
       <linux>true</linux>
       <solaris>false</solaris>
-      <osver>5.4.17-100.fc30.x86_64</osver>
+      <osver>5.4.19-100.fc30.x86_64</osver>
       <os32>false</os32>
       <os64>true</os64>
       <arch>glnxa64</arch>

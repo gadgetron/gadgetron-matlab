@@ -5,7 +5,7 @@ function next = accumulate_slice(input, header)
     function slice = slice_from_acquisitions(acquisitions)
         disp("Assembling buffer from " + num2str(length(acquisitions)) + " acquisitions");
 
-        acquisition = head(acquisitions);
+        acquisition = acquisitions(end);
         
         slice.reference = acquisition.header;        
         slice.data = complex(zeros( ...
@@ -16,7 +16,7 @@ function next = accumulate_slice(input, header)
             'single'                   ...
         ));
     
-        for acq = acquisitions.asarray
+        for acq = acquisitions
             enc_step_1 = acq.header.kspace_encode_step_1 + 1;
             enc_step_2 = acq.header.kspace_encode_step_2 + 1;
             slice.data(:, :, enc_step_1, enc_step_2) = transpose(acq.data);
@@ -25,12 +25,11 @@ function next = accumulate_slice(input, header)
 
     function slice = accumulate()
         
-        acquisitions = gadgetron.lib.list();
+        acquisitions = gadgetron.types.Acquisition.empty();
         
         while true
-            acquisition = input();
-            acquisitions = cons(acquisitions, acquisition);
-            if acquisition.is_flag_set(acquisition.ACQ_LAST_IN_SLICE), break; end
+            acquisitions(end + 1) = input();
+            if acquisitions(end).is_flag_set(acquisitions(end).ACQ_LAST_IN_SLICE), break; end
         end
         
         slice = slice_from_acquisitions(acquisitions);

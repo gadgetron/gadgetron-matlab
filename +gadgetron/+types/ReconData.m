@@ -1,4 +1,4 @@
-classdef ReconData < handle
+classdef ReconData
     
     properties
         bits

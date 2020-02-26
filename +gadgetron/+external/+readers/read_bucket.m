@@ -1,10 +1,11 @@
 function bucket = read_bucket(socket)
 
     meta = read_bucket_meta(socket);
-    bucket.data      = read_bundle(socket, meta.data, meta.data_stats);
-    bucket.ref       = read_bundle(socket, meta.ref, meta.ref_stats);
-    bucket.waveforms = read_waveform(socket, meta.waveform);
+    data      = read_bundle(socket, meta.data, meta.data_stats);
+    ref       = read_bundle(socket, meta.ref, meta.ref_stats);
+    waveforms = read_waveform(socket, meta.waveform);
     
+    bucket = gadgetron.types.Bucket(data, ref, waveforms);    
 end
 
 function meta = read_bucket_meta(socket)
@@ -87,15 +88,28 @@ function bundle = read_bundle(socket, meta, stats)
     );
 end
 
-function waveform = read_waveform(socket, meta) 
+function waveforms = read_waveform(socket, meta)
 
-    waveform.header = ...
-            read(socket, int32(meta.nbytes.header), 'uint8') ...
-        ;
+    headers = ...
+        gadgetron.external.readers.decode_waveform_headers( ...
+            read(socket, int32(meta.nbytes.header), 'uint8'), ...
+            meta.count ...
+        );
     
-    waveform.data = ...
+    data = ...
         typecast( ...
             read(socket, int32(meta.nbytes.data), 'uint8'), ...
             'int32' ...
         );        
+    
+    % Split the data array into individual waveform data.
+    data = mat2cell(data, headers.number_of_samples .* headers.channels);     
+
+    function waveform = create_waveform(index)
+        waveform_header = structfun(@(array) array(:, index), headers, 'UniformOutput', false);
+        waveform_data = reshape(data{index}, [waveform_header.number_of_samples, waveform_header.channels]);        
+        waveform = gadgetron.types.Waveform(waveform_header, waveform_data);                
+    end
+
+    waveforms = arrayfun(@create_waveform, 1:meta.count);
 end
