@@ -1,10 +1,45 @@
 classdef Connection < handle
+    % CONNECTION Represents a connection to an ISMRMRD client.
+    % 
+    %   CONNECTION objects are created by the Gadgetron Foreign Interface, 
+    %   representing communication with the ISMRMRD client.
+    %
+    % CONNECTION Properties:
+    %
+    %   config - Configuration sent by the ISMRMRD client.
+    %   header - ISMRMRD data header describing the current dataset.
+    %
+    % CONNECTION Methods:
+    %
+    %   next - Retrieve the next item from the client.
+    %   send - Send an item to the client. 
+    %
+    %   filter - Filter incoming items, based a provided predicate.
+    % 
+    %   add_reader - Add (or overwrite) a registered reader. 
+    %   add_writer - Add (or overwrite) a registered writer.
+    %
+    % A CONNECTION object is created to handle a connection to an ISMRMRD
+    % client.
+    %
+    % A CONNECTION object exposes the data flowing to and from the client
+    % through the 'next' and 'send' methods. Configuration and ISMRMRD
+    % Header metadata is exposed thorugh properties.
+    % 
+    % Each connection maintains a set of readers (each consuming an 
+    % ISMRMRD binary data, producung a workable item), and a set of writers 
+    % (each consuming items, producing ISMRMRD binary data). 
+    % 
+    % Applying a filter causes next to only return suitable items. Should
+    % an item be read that doesn't satisfy the filter predicate, the item
+    % is returned to the client unchanged. 
     
+        
     properties (GetAccess = public, SetAccess = private)
-        config 
-        header
+        config % CONFIG is the requested configuration, as sent by the client.         
+        header % HEADER is the ISMRMRD header describing the current data. 
     end
-   
+       
     properties (Access = private)
         socket
 

@@ -1,3 +1,5 @@
+
+
 function sock = listen(port)
     server = java.net.ServerSocket(port);
     server.setReuseAddress(true);
@@ -11,7 +13,14 @@ function sock = listen(port)
     while true
         try
             sock = socket.Socket(server.accept());
-            break        
+            break
+        catch ME
+            if strcmp(ME.identifier, 'MATLAB:Java:GenericException') && ...
+               isa(ME.ExceptionObject, 'java.net.SocketTimeoutException')
+                continue;
+            else
+                rethrow(ME);
+            end
         end
     end
 end
