@@ -3,7 +3,9 @@
 function sock = listen(port)
     server = java.net.ServerSocket(port);
     server.setReuseAddress(true);
-    server.setSoTimeout(1000); 
+    server.setSoTimeout(1000);
+    
+    cleanup = onCleanup(@() server.close());
 
     % Accept would block forever in previous versions, leaving Matlab
     % unresponsive (process was blocked, so Ctrl+C was ignored). 

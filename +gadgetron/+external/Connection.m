@@ -116,7 +116,7 @@ classdef Connection < handle
 
         function config = read_config(self) 
             [config, mid] = self.next();
-            assert(mid == gadgetron.Constants.CONFIG);
+            assert(mid == gadgetron.Constants.CONFIG || mid == gadgetron.Constants.FILENAME);
         end
         
         function header = read_header(self)
@@ -131,6 +131,7 @@ classdef Connection < handle
             % Maps do not support a wide range of key types. We're forced
             % to use uint32, as uint16 is not supported.
             readers = containers.Map('KeyType', 'uint32', 'ValueType', 'any');
+            readers(uint32(gadgetron.Constants.FILENAME))    = @gadgetron.external.readers.read_config_file;
             readers(uint32(gadgetron.Constants.CONFIG))      = @gadgetron.external.readers.read_config;
             readers(uint32(gadgetron.Constants.HEADER))      = @gadgetron.external.readers.read_header;
             readers(uint32(gadgetron.Constants.ACQUISITION)) = @gadgetron.external.readers.read_acquisition;
