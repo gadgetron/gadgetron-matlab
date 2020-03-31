@@ -67,6 +67,26 @@ classdef Connection < handle
         end
         
         function [item, mid] = next(self)
+            % NEXT  Provide the next item.
+            %   Calling NEXT will produce the next item available on a
+            %   connection. When next is called, and ISMRMRD Message ID
+            %   (MID) is read from the connection. This MID is used to
+            %   select an appropriate reader, which in turn reads the next
+            %   item from the connection. The item is returned to the
+            %   caller. Calling next when no more items are available 
+            %   throws a Connection:noNextItem exception.
+            %
+            %   item = connection.NEXT() produces the available next item. 
+            %   If no item is ready, next will block until an item is
+            %   available.
+            %
+            %   [item, MID] = connection.NEXT() provides the next item, 
+            %   along with the ISMRMRD Message ID associated with the item.
+            % 
+            %   If the connection is filtered, only items satisfying the
+            %   supplied predicate is returned. Any items not satisfying
+            %   the predicate is returned to the client unchanged.
+            
             [item, mid] = self.read_next();
             
             while ~self.filter_predicate(mid, item)
@@ -77,15 +97,41 @@ classdef Connection < handle
         end
         
         function send(self, item)
+            % SEND  Send an item to the client.
+            %   
+            %   connection.SEND(item) will cause the connection to examine
+            %   select an appropriate writer, and send the serialized item
+            %   back to the client.
+            
             for writer = self.writers.asarray
                 if writer.accepts(item), writer.write(self.socket, item); return, end
             end
-            throw(MException("Connection:send", ...
+            throw(MException("Connection:noAppropriateWriter", ...
                              "No appropriate writer found for type '%s'", ...
                              class(item)));
         end
         
         function filter(self, f)
+            % FILTER  Set the connection filter.
+            %   Setting a filter limits which items can be returned
+            %   subsequent calls to next.
+            %
+            %   connection.FILTER(@predicate) ensures that next will only
+            %   ever return items for which predicate(item) returns true.
+            %
+            %   Example:
+            %   connection.FILTER(@(item) isprop(item, 'header')) ensures
+            %   that only items with a 'header' property are ever returned
+            %   by subsequent calls to connection.next.
+            %
+            %   Besides predicates (functions), filter also accepts char 
+            %   arrays (and strings). These serve as shorthand for an 'isa' 
+            %   predicate.
+            %
+            %   Example:
+            %   connection.FILTER('foo.bar.Baz') is equivalent to
+            %   connection.FILTER(@(item) isa(item, 'foo.bar.Baz')
+            
             if isa(f, 'char') || isa(f, 'string')
                 self.filter_predicate = @(~, item) isa(item, f);
             else
@@ -94,10 +140,29 @@ classdef Connection < handle
         end
         
         function add_reader(self, slot, reader)
+            % ADD_READER  Add a user-defined reader to the connection's
+            % reader set.
+            %
+            %   connection.ADD_READER(slot, @reader_function) registers a
+            %   reader function with the connection. Whenever an ISMRMRD
+            %   message with MID==slot is received, reader_function will be
+            %   invoked to deserialize the ISMRMRD binary data, and return
+            %   a useful item. 
+            
             self.readers(uint32(slot)) = reader;
         end
         
         function add_writer(self, writer)
+            % ADD_WRITER  Add a user-defined writer to the connection's
+            % writer set.
+            %
+            %   connection.ADD_WRITER(writer) adds a writer to the
+            %   connection's writer-set. The writer is expected to be a 
+            %   struct (or object) featuring an 'accepts' and a 'write'
+            %   method, such that 
+            %       writer.write(socket, item) is called when
+            %       writer.accepts(item) returns true.
+            
             self.writers = cons(self.writers, writer);
         end
     end    
@@ -106,8 +171,10 @@ classdef Connection < handle
         function [item, mid] = read_next(self)
             mid = gadgetron.external.readers.read_message_id(self.socket);
             
-            if mid == gadgetron.Constants.CLOSE
-                throw(MException('Connection:noNextItem', 'No `next` item; connection is closed.'));
+            if ~self.readers.isKey(mid)
+                throw(MException('Connection:noAppropriateReader', ...
+                                 'No appropriate reader found for message with id: %d', ...
+                                 mid));
             end
             
             reader = self.readers(mid);
@@ -116,7 +183,8 @@ classdef Connection < handle
 
         function config = read_config(self) 
             [config, mid] = self.next();
-            assert(mid == gadgetron.Constants.CONFIG || mid == gadgetron.Constants.FILENAME);
+            assert(mid == gadgetron.Constants.CONFIG || ...
+                   mid == gadgetron.Constants.FILENAME);
         end
         
         function header = read_header(self)
@@ -131,6 +199,7 @@ classdef Connection < handle
             % Maps do not support a wide range of key types. We're forced
             % to use uint32, as uint16 is not supported.
             readers = containers.Map('KeyType', 'uint32', 'ValueType', 'any');
+            readers(uint32(gadgetron.Constants.CLOSE))       = @gadgetron.external.Connection.close_handler;
             readers(uint32(gadgetron.Constants.FILENAME))    = @gadgetron.external.readers.read_config_file;
             readers(uint32(gadgetron.Constants.CONFIG))      = @gadgetron.external.readers.read_config;
             readers(uint32(gadgetron.Constants.HEADER))      = @gadgetron.external.readers.read_header;
@@ -148,6 +217,10 @@ classdef Connection < handle
                 gadgetron.external.writers.write_acquisition, ...
                 gadgetron.external.writers.write_waveform ...
             );
+        end
+                
+        function item = close_handler(~)
+            throw(MException('Connection:noNextItem', 'No `next` item; connection is closed.'));
         end
         
         function tf = always_accept(~, ~), tf = true; end
