@@ -6,7 +6,7 @@ function acquisition = read_acquisition(socket)
 end
 
 function trajectory = read_trajectory(socket, header)
-    N = int32(header.number_of_samples) * int32(header.trajectory_dimensions);
+    N = header.number_of_samples * header.trajectory_dimensions;
     trajectory = reshape( ...
         read(socket, N, 'single'), ...
         header.trajectory_dimensions, ...
@@ -15,7 +15,7 @@ function trajectory = read_trajectory(socket, header)
 end
 
 function data = read_data(socket, header)
-    N = int32(header.active_channels) * int32(header.number_of_samples) * 2;
+    N = header.active_channels * header.number_of_samples * 2;
     data = read(socket, N, 'single');
     data = reshape( ...
         complex(data(1:2:end), data(2:2:end)), ...
