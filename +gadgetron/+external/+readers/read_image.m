@@ -15,14 +15,14 @@ function data = read_data(socket, header)
         transformation( ...
             read(socket, nelements, type) ...
         ), ...
-        [header.channels header.matrix_size] ...
+        [header.channels transpose(header.matrix_size)] ...
     );
 end
 
 
 function [nelements, type, transformation] = examine_header(header)
 
-    nelements = prod([header.channels header.matrix_size]);
+    nelements = prod([header.channels transpose(header.matrix_size)]);
     transformation = @(i) i;
 
     switch header.data_type
