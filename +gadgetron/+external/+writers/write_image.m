@@ -44,5 +44,13 @@ function write_attribute_string(socket, attribute_string)
 end
 
 function write_data(socket, data)
-    write(socket, reshape(data, 1, []));
+    if(isreal(data))
+        output = data;
+    else
+        output = zeros([2, size(data)], 'like',data);
+        output(1, :) = real(data(:));
+        output(2, :) = imag(data(:));
+    end
+    write(socket, reshape(output, 1, []));
+%     write(socket, reshape(data, 1, []));
 end
