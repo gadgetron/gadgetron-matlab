@@ -14,8 +14,8 @@ end
 
 function buffer = read_recon_buffer(socket)
     buffer.data = gadgetron.external.readers.read_array(socket, 'complex64');
-    buffer.trajectory = gadgetron.external.readers.read_optional(socket, @read_array, 'single');
-    buffer.density = gadgetron.external.readers.read_optional(socket, @read_array, 'single');
+    buffer.trajectory = gadgetron.external.readers.read_optional(socket, @gadgetron.external.readers.read_array, 'single');
+    buffer.density = gadgetron.external.readers.read_optional(socket, @gadgetron.external.readers.read_array, 'single');
     buffer.headers = read_header_array(socket);
     buffer.sampling_description = read_sampling_description(socket);    
 end
