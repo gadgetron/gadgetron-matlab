@@ -9,7 +9,9 @@ end
 
 function recon_bit = read_recon_bit(socket)
     recon_bit.buffer = read_recon_buffer(socket);
+    recon_bit.buffer = separate_traj_and_dcw(recon_bit.buffer);
     recon_bit.reference = gadgetron.external.readers.read_optional(socket, @read_recon_buffer);
+    recon_bit.reference = separate_traj_and_dcw(recon_bit.reference);
 end
 
 function buffer = read_recon_buffer(socket)
@@ -17,7 +19,7 @@ function buffer = read_recon_buffer(socket)
     buffer.trajectory = gadgetron.external.readers.read_optional(socket, @gadgetron.external.readers.read_array, 'single');
     buffer.density = gadgetron.external.readers.read_optional(socket, @gadgetron.external.readers.read_array, 'single');
     buffer.headers = read_header_array(socket);
-    buffer.sampling_description = read_sampling_description(socket);    
+    buffer.sampling_description = read_sampling_description(socket);       
 end
 
 function headers = read_header_array(socket)
@@ -45,4 +47,14 @@ function sampling_limits = read_sampling_limits(socket)
     sampling_limits.min = raw(1:3:end);
     sampling_limits.center = raw(2:3:end);
     sampling_limits.max = raw(3:3:end);
+end
+
+function buffer = separate_traj_and_dcw(buffer) % retrocompatibility
+    if(~isempty(buffer) && isempty(buffer.density) && ~isempty(buffer.trajectory))
+        if(buffer.headers.trajectory_dimensions(1) == 3)
+            buffer.density = buffer.trajectory(3,:,:);
+            buffer.trajectory(3,:,:)=[];
+            buffer.headers.trajectory_dimensions=2*ones(size(buffer.headers.trajectory_dimensions));
+        end
+    end
 end
