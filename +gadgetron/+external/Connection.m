@@ -1,8 +1,8 @@
 classdef Connection < handle
     % CONNECTION Represents a connection to an ISMRMRD client.
     % 
-    %   CONNECTION objects are created by the Gadgetron Foreign Interface, 
-    %   representing communication with the ISMRMRD client.
+    %   CONNECTION objects are created by the Gadgetron External Language
+    %   Interface, representing communication with the ISMRMRD client.
     %
     % CONNECTION Properties:
     %
@@ -26,8 +26,8 @@ classdef Connection < handle
     % through the 'next' and 'send' methods. Configuration and ISMRMRD
     % Header metadata is exposed thorugh properties.
     % 
-    % Each connection maintains a set of readers (each consuming an 
-    % ISMRMRD binary data, producung a workable item), and a set of writers 
+    % Each connection maintains a set of readers (each consuming ISMRMRD 
+    % binary data, producung a workable item), and a set of writers 
     % (each consuming items, producing ISMRMRD binary data). 
     % 
     % Applying a filter causes next to only return suitable items. Should
@@ -71,13 +71,13 @@ classdef Connection < handle
             %   Calling NEXT will produce the next item available on a
             %   connection. When next is called, and ISMRMRD Message ID
             %   (MID) is read from the connection. This MID is used to
-            %   select an appropriate reader, which in turn reads the next
+            %   select an appropriate reader, which in turn reads the 
             %   item from the connection. The item is returned to the
             %   caller. Calling next when no more items are available 
             %   throws a Connection:noNextItem exception.
             %
-            %   item = connection.NEXT() produces the available next item. 
-            %   If no item is ready, next will block until an item is
+            %   item = connection.NEXT() produces the next available item. 
+            %   If no item is ready, next will block until an item becomes
             %   available.
             %
             %   [item, MID] = connection.NEXT() provides the next item, 
@@ -99,9 +99,9 @@ classdef Connection < handle
         function send(self, item)
             % SEND  Send an item to the client.
             %   
-            %   connection.SEND(item) will cause the connection to examine
-            %   select an appropriate writer, and send the serialized item
-            %   back to the client.
+            %   connection.SEND(item) causes the connection to examine the
+            %   item, select an appropriate writer, and use the writer to 
+            %   serialize the item back to the client.
             
             for writer = self.writers.asarray
                 if writer.accepts(item), writer.write(self.socket, item); return, end
@@ -113,7 +113,7 @@ classdef Connection < handle
         
         function filter(self, f)
             % FILTER  Set the connection filter.
-            %   Setting a filter limits which items can be returned
+            %   Setting a filter limits which items can be returned from
             %   subsequent calls to next.
             %
             %   connection.FILTER(@predicate) ensures that next will only
@@ -146,8 +146,7 @@ classdef Connection < handle
             %   connection.ADD_READER(slot, @reader_function) registers a
             %   reader function with the connection. Whenever an ISMRMRD
             %   message with MID==slot is received, reader_function will be
-            %   invoked to deserialize the ISMRMRD binary data, and return
-            %   a useful item. 
+            %   invoked to read and deserialize the ISMRMRD binary data.
             
             self.readers(uint32(slot)) = reader;
         end

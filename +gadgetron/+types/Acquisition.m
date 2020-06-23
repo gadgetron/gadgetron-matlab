@@ -1,6 +1,6 @@
 classdef Acquisition
 
-        properties (Access = public, Constant)
+        properties (Access = public, Hidden, Constant)
         % Acquisition flags
         ACQ_FIRST_IN_ENCODE_STEP1               = bitshift(uint64(1), 0)
         ACQ_LAST_IN_ENCODE_STEP1                = bitshift(uint64(1), 1)

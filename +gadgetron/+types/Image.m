@@ -1,6 +1,6 @@
 classdef Image
     
-    properties (Access = public, Constant)
+    properties (Access = public, Hidden, Constant)
        % Image constants
        USHORT       = uint16(1);
        SHORT        = uint16(2);
