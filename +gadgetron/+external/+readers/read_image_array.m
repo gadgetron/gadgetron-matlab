@@ -21,7 +21,7 @@ end
 
 function meta = read_meta_container(socket)
     size = read(socket, 1, 'uint64');
-    meta = arrayfun(@(~) gadgetron.external.readers.read_string(socket, 'uint64'), 1:size);
+    meta = arrayfun(@(~) gadgetron.external.readers.read_string(socket, 'uint64'), 1:size,'UniformOutput',false);
 end
 
 function waveform = read_optional_waveforms(socket)
