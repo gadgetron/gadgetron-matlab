@@ -15,7 +15,7 @@ function trajectory = read_trajectory(socket, header)
 end
 
 function data = read_data(socket, header)
-    N = header.active_channels * header.number_of_samples * 2;
+    N = single(header.active_channels) * single(header.number_of_samples) * 2;
     data = read(socket, N, 'single');
     data = reshape( ...
         complex(data(1:2:end), data(2:2:end)), ...
