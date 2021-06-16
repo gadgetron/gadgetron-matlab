@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.toolbox" plugin-version="1.0">
-  <configuration build-checksum="1006529839" file="/home/princess/Gradient/gadgetron-matlab/gadgetron.prj" location="/home/princess/Gradient/gadgetron-matlab" name="gadgetron" target="target.toolbox" target-name="Package Toolbox">
+  <configuration build-checksum="2850277851" file="/home/princess/Gradient/gadgetron-matlab/gadgetron.prj" location="/home/princess/Gradient/gadgetron-matlab" name="gadgetron" target="target.toolbox" target-name="Package Toolbox">
     <param.appname>gadgetron</param.appname>
     <param.authnamewatermark>Kristoffer Langeland Knudsen</param.authnamewatermark>
     <param.email>kristofferlknudsen@gradientsoftware.net</param.email>
@@ -8,7 +8,7 @@
     <param.description>This Gadgetron interface is based on ISMRMRD Datatypes, fascilitating direct communication with Gadgetron, or other ISMRMRD-based applications.
 NOTE: Requires Gadgetron 4.1 or newer.</param.description>
     <param.screenshot>${PROJECT_ROOT}/gadgetron-logo.png</param.screenshot>
-    <param.version>2.0.15</param.version>
+    <param.version>2.1.0</param.version>
     <param.output>${PROJECT_ROOT}/gadgetron.mltbx</param.output>
     <param.products.name />
     <param.products.id />
@@ -65,9 +65,6 @@ NOTE: Requires Gadgetron 4.1 or newer.</param.description>
     <param.additional.sw.mac.url />
     <param.additional.sw.linux.url />
     <unset>
-      <param.authnamewatermark />
-      <param.email />
-      <param.company />
       <param.output />
       <param.products.name />
       <param.products.id />
@@ -115,7 +112,7 @@ NOTE: Requires Gadgetron 4.1 or newer.</param.description>
     </build-deliverables>
     <workflow />
     <matlab>
-      <root>/home/princess/.local/MATLAB/R2020a</root>
+      <root>/home/princess/.local/MATLAB</root>
       <toolboxes />
     </matlab>
     <platform>
@@ -127,7 +124,7 @@ NOTE: Requires Gadgetron 4.1 or newer.</param.description>
       <vista>false</vista>
       <linux>true</linux>
       <solaris>false</solaris>
-      <osver>5.7.8-200.fc32.x86_64</osver>
+      <osver>5.12.10-200.fc33.x86_64</osver>
       <os32>false</os32>
       <os64>true</os64>
       <arch>glnxa64</arch>

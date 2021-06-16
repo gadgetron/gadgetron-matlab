@@ -20,9 +20,14 @@ classdef Image
     
     properties 
         header
-        attribute_string
+        meta
         data
     end
+    
+    properties (Dependent, Hidden)
+        attribute_string
+    end
+        
     
     methods
         function self = Image(header, attribute_string, data)
@@ -37,5 +42,15 @@ classdef Image
             header = create_image_header(data, reference);
             image = gadgetron.types.Image(header, "", data);
         end
+    end
+    
+    methods
+        function str = get.attribute_string(self)
+            str = gadgetron.types.Meta.to_string(self.meta);
+        end
+        
+        function self = set.attribute_string(self, value)
+            self.meta = gadgetron.types.Meta.from_string(value);
+        end        
     end
 end
