@@ -13,12 +13,12 @@ function header = create_image_header(data, reference)
     header.slice_dir                = reference.slice_dir;
     header.patient_table_position   = reference.patient_table_position;
     
-    header.average                  = 0;
+    header.average                  = reference.average;
     header.slice                    = reference.slice;
-    header.contrast                 = 0;
-    header.phase                    = 0;
-    header.repetition               = 0;
-    header.set                      = 0;
+    header.contrast                 = reference.contrast;
+    header.phase                    = reference.phase;
+    header.repetition               = reference.repetition;
+    header.set                      = reference.set;
     
     header.acquisition_time_stamp   = reference.acquisition_time_stamp;
     header.physiology_time_stamp    = reference.physiology_time_stamp;
